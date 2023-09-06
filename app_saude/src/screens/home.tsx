@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native"
 export const Home = () =>{
     return(
         <View style={styles.container}>
-            <Text style={{color: "white"}}>Aplicativo de saúde</Text>
+            <Text style={{color: "#6A0000"}}>Aplicativo de saúde</Text>
         </View>
     )
 }
@@ -11,7 +11,7 @@ export const Home = () =>{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "red",
+        backgroundColor: "F1FFF1",
         alignItems: 'center',
         justifyContent: 'center',
     },
