@@ -2,40 +2,46 @@ import { useState } from "react"
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "react-native"
 
 type typeImc = {
-    peso: number,
-    altura: number,
-    idade: number
+    peso: string,
+    altura: string,
+    idade: string
 }
 
 export const Imc = () =>{
     const [dados, setDados] = useState<typeImc>({
-        peso: 0.000,
-        altura: 0.00,
-        idade: 0
+        peso: "",
+        altura: "",
+        idade: ""
     });
     const [imc, setImc] = useState<number>(0);
     const [classificacao, setClassificacao] = useState("")
 
-    function cacularImc(){
+    async function cacularImc(){
         if(dados.peso && dados.altura && dados.idade){
-            setImc(dados.peso / (dados.altura * dados.altura));
-            if(imc < 18.5){
-                setClassificacao("Magreza");
-            }else if( imc > 18.5 && imc <= 24.9){
-                setClassificacao("normal")
-            }else if(imc > 24.9 && imc <= 30){
-                setClassificacao("Sobrepeso")
-            }else{
-                setClassificacao("Obesidade")
-            }
+            const peso = parseFloat(dados.peso.replace(",","."));
+            const altura = parseFloat(dados.altura.replace(",","."))
+            setImc(( peso / ( altura * altura))); 
+            await verificarClassificacao();
         }else{
           alert("Preencha todos os campos!")
         }
     }
 
+    async function verificarClassificacao() {
+        if(imc <= 18.50){
+            setClassificacao("Magreza");
+        }else if( imc > 18.50 && imc <= 24.90){
+            setClassificacao("Normal")
+        }else if(imc > 24.90 && imc <= 30){
+            setClassificacao("Sobrepeso")
+        }else{
+            setClassificacao("Obesidade")
+        }
+    }
+
     return(
         <View style={styles.container}>
-            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 28}}>Calcular IMC</Text>
+            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40}}>Calcular IMC</Text>
             <View style={styles.containerFlex}>
                 <View style={styles.camposLabel}>
                     <Text style={styles.label}>Peso:</Text>
@@ -43,9 +49,9 @@ export const Imc = () =>{
                     <Text style={styles.label}>Idade:</Text>
                 </View>
                 <View style={styles.camposInput}>
-                    <TextInput value={String(dados.peso).replace(".",",")} placeholder="Ex.: 60,546" style={styles.input} onChangeText={(e)=> setDados({...dados, peso: parseFloat(e)})}/>
-                    <TextInput value={String(dados.altura).replace(".",",")}  placeholder="Ex.: 1,50"  style={styles.input} onChangeText={(e)=> setDados({...dados, altura: parseFloat(e)})}/>
-                    <TextInput value={String(dados.idade).replace(".",",")}  placeholder="Ex.: 24"  style={styles.input} onChangeText={(e)=> setDados({...dados, idade: parseFloat(e)})}/>
+                    <TextInput keyboardType="decimal-pad" value={dados.peso} placeholder="Ex.: 60,546" style={styles.input} onChangeText={(e)=> setDados({ ...dados, peso: e.replace('.', ',') })}/>
+                    <TextInput keyboardType="decimal-pad" value={dados.altura}  placeholder="Ex.: 1,50"  style={styles.input} onChangeText={(e)=> setDados({...dados, altura: e.replace('.', ',')})}/>
+                    <TextInput keyboardType="decimal-pad" value={dados.idade}  placeholder="Ex.: 24"  style={styles.input} onChangeText={(e)=> setDados({...dados, idade: e.replace('.', ',')})}/>
                 </View>
                 <View style={styles.camposMedidas}>
                     <Text style={styles.label}>Kg</Text>
@@ -53,12 +59,16 @@ export const Imc = () =>{
                     <Text style={styles.label}>Anos</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.button} onPress={()=>cacularImc}>
+            <TouchableOpacity style={styles.button} onPress={cacularImc}>
                 <Image source={require("../../public/images/calculadora.png")} style={{marginRight: 5, height: 30, width: 30, tintColor: "white"}}/>
                 <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>Calcular</Text>
             </TouchableOpacity>
-            <Text>Seu Imc é de: {imc}.</Text>
-            <Text>{classificacao}.</Text>
+            {imc ? (
+                <View style={{height: 200, alignItems: "center", justifyContent: "center"}}>
+                    <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 28}}>Seu Imc é de: {imc.toFixed(2).replace(".",",")}.</Text>
+                    <Text style={{color: classificacao === "Magreza" ? "yellow" : classificacao === "Normal" ? "green" : classificacao === "Sobrepeso" ? "orange" : "red", fontWeight: "bold", fontSize: 20}}>{classificacao}.</Text>
+                </View>
+            ):null}
         </View>
     )
 }
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F1FFF1",
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 20
+        marginTop: 30
     },
     camposLabel: {
         height: 100,
