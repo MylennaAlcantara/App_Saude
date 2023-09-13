@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "react-native"
 
 type typeImc = {
@@ -19,9 +19,8 @@ export const Imc = () =>{
     async function cacularImc(){
         if(dados.peso && dados.altura && dados.idade){
             const peso = parseFloat(dados.peso.replace(",","."));
-            const altura = parseFloat(dados.altura.replace(",","."))
-            setImc(( peso / ( altura * altura))); 
-            await verificarClassificacao();
+            const altura = parseFloat(dados.altura.replace(",","."));
+            setImc( peso / ( altura * altura)); 
         }else{
           alert("Preencha todos os campos!")
         }
@@ -38,6 +37,10 @@ export const Imc = () =>{
             setClassificacao("Obesidade")
         }
     }
+
+    useEffect(()=>{
+        verificarClassificacao();
+    },[imc])
 
     return(
         <View style={styles.container}>
