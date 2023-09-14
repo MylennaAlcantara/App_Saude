@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home } from "../screens/home";
 import { Imc } from "../screens/imc";
 import { View, Image } from "react-native";
+import { Hidratacao } from "../screens/hidratacao";
 
 const Tab = createBottomTabNavigator();
 export function MyTabs() {
@@ -30,6 +31,15 @@ export function MyTabs() {
                 tabBarActiveTintColor: "#C4F0C5",
                 tabBarInactiveTintColor: "white"
             }} />
+            <Tab.Screen name="Hidratacao" component={Hidratacao} 
+            options={{
+                headerShown: false,
+                tabBarIcon: ({size, color})=>(
+                    <InconeCopo size={size} color={color}/>
+                ),
+                tabBarActiveTintColor: "#C4F0C5",
+                tabBarInactiveTintColor: "white"
+            }} />
 		</Tab.Navigator>
 	);
 }
@@ -48,6 +58,13 @@ const InconeHome = ({size, color}: propIcon) => {
     return(
         <View>
             <Image source={require("../../public/images/home.png")} style={{height: size, width: size}} tintColor={color}/>
+        </View>
+    )
+}
+const InconeCopo = ({size, color}: propIcon) => {
+    return(
+        <View>
+            <Image source={require("../../public/images/copo.png")} style={{height: size, width: size}} tintColor={color}/>
         </View>
     )
 }
