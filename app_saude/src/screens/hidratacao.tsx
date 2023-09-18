@@ -1,18 +1,22 @@
-import {View, Text, Image, StyleSheet} from "react-native"
+import {View, Text, Image, StyleSheet} from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const Hidratacao = () => {
     return(
         <View style={styles.container}>
-            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40}}>Hidratação</Text>
-            <View style={styles.copoCheio}>
-                <Image source={require("../../public/images/copo.png")} style={styles.image}/>
-            </View>
+            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40, position: "absolute", top: 100}}>Hidratação</Text>
+            <LinearGradient colors={['transparent', 'blue']} locations={[1,0.7]}>
+                <View style={styles.copo}>
+                    <Image source={require("../../public/images/copo.png")} style={styles.image}/>
+                </View>
+            </LinearGradient>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+
         flex: 1,
         backgroundColor: "#F1FFF1",
         alignItems: 'center',
@@ -67,6 +71,18 @@ const styles = StyleSheet.create({
         width: 100,
         position: "absolute",
     },
+    copo:{
+        alignItems: "center",
+        justifyContent: "center",
+        width: 85,
+        height: 100,
+        borderLeftWidth: 15,
+        borderLeftColor: "#F1FFF1",
+        borderRightWidth: 15,
+        borderRightColor: "#F1FFF1",
+        borderTopWidth: 100,
+        borderTopColor: "transparent"
+    },
     copoCheio: {
         alignItems: "center",
         justifyContent: "center",
@@ -79,37 +95,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 15,
         borderRightColor: 'transparent',
         borderStyle: 'solid',
-        borderTopWidth: 100,
-        borderTopColor: 'blue',
-    },
-    copoMeio: {
-        alignItems: "center",
-        justifyContent: "center",
-        width: 85,
-        height: 100,
-        borderBottomWidth: 0,
-        borderBottomColor: 'transparent',
-        borderLeftWidth: 15,
-        borderLeftColor: 'transparent',
-        borderRightWidth: 15,
-        borderRightColor: 'transparent',
-        borderStyle: 'solid',
-        borderTopWidth: 100,
-        borderTopColor: 'blue',
-    },
-    copoBaixo: {
-        alignItems: "center",
-        justifyContent: "center",
-        width: 85,
-        height: 100,
-        borderBottomWidth: 0,
-        borderBottomColor: 'transparent',
-        borderLeftWidth: 15,
-        borderLeftColor: 'transparent',
-        borderRightWidth: 15,
-        borderRightColor: 'transparent',
-        borderStyle: 'solid',
-        borderTopWidth: 100,
-        borderTopColor: 'blue',
+        borderTopWidth: 0,
+        borderTopColor: 'transparent',
     },
 })
