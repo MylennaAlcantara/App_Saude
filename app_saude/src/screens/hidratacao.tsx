@@ -1,15 +1,54 @@
-import {View, Text, Image, StyleSheet} from "react-native";
+import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useState } from "react";
 
 export const Hidratacao = () => {
+    const [peso, setPeso] = useState("");
+    const [quantidadeAgua, setQuantidadeAgua] = useState<number>(0);
+    const [quantidadeBebida, setQuantidadeBebida] = useState("");
+    const [nivel, setNivel] = useState("alto");
+
+    useEffect(()=>{
+        setQuantidadeAgua(parseFloat(peso)*35);
+    }, [peso, quantidadeBebida])
+
+    function calcularAgua(){
+        if(quantidadeAgua > parseFloat(quantidadeBebida)){
+            alert("Você precisa beber no minimo: "+quantidadeAgua+"L");
+            setNivel("baixo");
+        }else if(parseFloat(quantidadeBebida) > (quantidadeAgua/2) && quantidadeAgua > parseFloat(quantidadeBebida)){
+            alert("Você precisa beber no minimo: "+quantidadeAgua+"L");
+            setNivel("medio");
+        }else{
+            alert("Parabéns! Você bebeu mais do que o seu ideal de: " +quantidadeAgua+"L");
+            setNivel("alto");
+        }
+    }
+
     return(
         <View style={styles.container}>
             <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40, position: "absolute", top: 100}}>Hidratação</Text>
-            <LinearGradient colors={['transparent', 'blue']} locations={[1,0.7]}>
+            <LinearGradient 
+                colors={nivel === "baixo" ? copoVazio.colors : nivel === "medio" ? copoMeio.colors : copoCheio.colors} 
+                locations={nivel === "baixo" ? copoVazio.location : nivel === "medio" ? copoMeio.location : copoCheio.location}>
                 <View style={styles.copo}>
                     <Image source={require("../../public/images/copo.png")} style={styles.image}/>
                 </View>
             </LinearGradient>
+            <View style={styles.containerFlex}>
+                <View style={styles.camposLabel}>
+                    <Text style={styles.label}>Digite seu peso:</Text>
+                    <Text style={styles.label}>Quayo tomou de agua?:</Text>
+                </View>
+                <View style={styles.camposInput}>
+                    <TextInput style={styles.input} value={peso} onChangeText={(e)=> setPeso(e)} placeholder="Ex.: 60,456"/>
+                    <TextInput style={styles.input} value={quantidadeBebida} onChangeText={(e)=> setQuantidadeBebida(e)} placeholder="Ex.: 60,456"/>
+                </View>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={calcularAgua}>
+                <Image source={require("../../public/images/calculadora.png")} style={{marginRight: 5, height: 30, width: 30, tintColor: "white"}}/>
+                <Text style={{color: "white", fontWeight: "bold", fontSize: 20}}>Calcular</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -83,19 +122,17 @@ const styles = StyleSheet.create({
         borderTopWidth: 100,
         borderTopColor: "transparent"
     },
-    copoCheio: {
-        alignItems: "center",
-        justifyContent: "center",
-        width: 85,
-        height: 100,
-        borderBottomWidth: 0,
-        borderBottomColor: 'transparent',
-        borderLeftWidth: 15,
-        borderLeftColor: 'transparent',
-        borderRightWidth: 15,
-        borderRightColor: 'transparent',
-        borderStyle: 'solid',
-        borderTopWidth: 0,
-        borderTopColor: 'transparent',
-    },
-})
+});
+
+const copoMeio = {
+    colors: ['transparent', 'blue'],
+    location: [0.5,0.7]
+}
+const copoCheio = {
+    colors: ['blue', 'blue'],
+    location: [1,1]
+}
+const copoVazio = {
+    colors: ['transparent', 'transparent', 'blue'],
+    location: [0.5,0.7,0.5]
+}
