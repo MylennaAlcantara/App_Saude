@@ -44,7 +44,7 @@ export const Imc = () =>{
 
     return(
         <View style={styles.container}>
-            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40}}>Calcular IMC</Text>
+            <Text style={{color: "#6A0000", fontWeight: "bold", fontSize: 40, position: "absolute", top: 100}}>Calcular IMC</Text>
             <View style={styles.containerFlex}>
                 <View style={styles.camposLabel}>
                     <Text style={styles.label}>Peso:</Text>
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 30
     }
     
 })
